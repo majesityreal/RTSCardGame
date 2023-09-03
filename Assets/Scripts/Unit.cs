@@ -6,14 +6,9 @@ using Pathfinding;
 public class Unit : MonoBehaviour
 {
 
-    float moveSpeed;
+    private GameObject isSelectedSprite;
 
-    private GameObject selectedGO;
-    private Vector2 movePosition;
-
-    public Transform target;
-
-    public float speed = 200f;
+    public float moveSpeed = 200f;
     public float nextWaypointDistance = 3f;
 
     Path path;
@@ -25,7 +20,7 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        selectedGO = transform.Find("Selected").gameObject;
+        isSelectedSprite = transform.Find("Selected").gameObject; // hard coded, do not do
         SetSelectedVisible(false);
     }
 
@@ -37,15 +32,6 @@ public class Unit : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
-    }
-
-    void OnPathComplete(Path p)
-    {
-        if (!p.error)
-        {
-            path = p;
-            currentWaypoint = 0;
-        }
     }
 
     // Update is called once per frame
@@ -68,7 +54,7 @@ public class Unit : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 move = direction * speed * Time.deltaTime;
+        Vector2 move = direction * moveSpeed * Time.deltaTime;
 
         rb.velocity = move;
 
@@ -80,6 +66,8 @@ public class Unit : MonoBehaviour
 
     }
 
+    #region C* pathfinding stuff
+
     public void MoveTo(Vector3 targetPosition)
     {
         seeker.StartPath(rb.position, targetPosition, OnPathComplete);
@@ -87,8 +75,18 @@ public class Unit : MonoBehaviour
 
     public void SetSelectedVisible(bool visible)
     {
-        selectedGO.SetActive(visible);
+        isSelectedSprite.SetActive(visible);
     }
+
+    void OnPathComplete(Path p)
+    {
+        if (!p.error)
+        {
+            path = p;
+            currentWaypoint = 0;
+        }
+    }
+    #endregion
 
 
 
