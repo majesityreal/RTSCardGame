@@ -11,23 +11,24 @@ public class Unit : MonoBehaviour
     public float moveSpeed = 200f;
     public float nextWaypointDistance = 3f;
 
-    Path path;
-    int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
+    protected Path path;
+    protected int currentWaypoint = 0;
+    protected bool isMovingToDestination = false;
 
-    Seeker seeker;
-    Rigidbody2D rb;
+    protected Seeker seeker;
+    protected Rigidbody2D rb;
 
-    private void Awake()
+    protected void Awake()
     {
         isSelectedSprite = transform.Find("Selected").gameObject; // hard coded, do not do
         SetSelectedVisible(false);
+        Debug.Log("I have stuff");
     }
 
 
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
@@ -35,7 +36,7 @@ public class Unit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    protected void FixedUpdate()
     {
         if (path == null)
         {
@@ -44,13 +45,13 @@ public class Unit : MonoBehaviour
 
         if (currentWaypoint >= path.vectorPath.Count)
         {
-            reachedEndOfPath = true;
+            isMovingToDestination = false;
             rb.velocity = new Vector2();
             return;
         }
         else
         {
-            reachedEndOfPath = false;
+            isMovingToDestination = true;
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
@@ -58,8 +59,8 @@ public class Unit : MonoBehaviour
 
         rb.velocity = move;
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-        if (distance < nextWaypointDistance)
+        float distanceToWaypoint = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+        if (distanceToWaypoint < nextWaypointDistance)
         {
             currentWaypoint++;
         }
@@ -78,7 +79,7 @@ public class Unit : MonoBehaviour
         isSelectedSprite.SetActive(visible);
     }
 
-    void OnPathComplete(Path p)
+    protected void OnPathComplete(Path p)
     {
         if (!p.error)
         {
