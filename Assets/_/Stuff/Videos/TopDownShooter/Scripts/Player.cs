@@ -9,15 +9,14 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
- 
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using CodeMonkey.MonoBehaviours;
 
-namespace TopDownShooter {
+namespace TopDownShooter
+{
     public class Player : MonoBehaviour, Enemy.IEnemyTargetable {
 
         public static Player Instance { get; private set; }

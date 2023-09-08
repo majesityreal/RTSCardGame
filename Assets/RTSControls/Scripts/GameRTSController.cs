@@ -8,10 +8,10 @@ public class GameRTSController : MonoBehaviour {
     [SerializeField] private Transform selectionAreaTransform;
 
     private Vector3 startPosition;
-    private List<UnitRTS> selectedUnitRTSList;
+    public List<Unit> selectedUnitList;
 
     private void Awake() {
-        selectedUnitRTSList = new List<UnitRTS>();
+        selectedUnitList = new List<Unit>();
         selectionAreaTransform.gameObject.SetActive(false);
     }
 
@@ -44,23 +44,23 @@ public class GameRTSController : MonoBehaviour {
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, UtilsClass.GetMouseWorldPosition());
 
             // Deselect all Units
-            foreach (UnitRTS unitRTS in selectedUnitRTSList) {
-                unitRTS.SetSelectedVisible(false);
+            foreach (Unit unit in selectedUnitList) {
+                unit.SetSelectedVisible(false);
             }
-            selectedUnitRTSList.Clear();
+            selectedUnitList.Clear();
 
             // Select Units within Selection Area
             foreach (Collider2D collider2D in collider2DArray) {
-                UnitRTS unitRTS = collider2D.GetComponent<UnitRTS>();
-                if (unitRTS != null) {
-                    unitRTS.SetSelectedVisible(true);
-                    selectedUnitRTSList.Add(unitRTS);
+                Unit unit = collider2D.GetComponent<Unit>();
+                if (unit != null) {
+                    unit.SetSelectedVisible(true);
+                    selectedUnitList.Add(unit);
                 }
             }
 
-            Debug.Log(selectedUnitRTSList.Count);
+            Debug.Log(selectedUnitList.Count);
         }
-
+/*
         if (Input.GetMouseButtonDown(1)) {
             // Right Mouse Button Pressed
             Vector3 moveToPosition = UtilsClass.GetMouseWorldPosition();
@@ -69,11 +69,11 @@ public class GameRTSController : MonoBehaviour {
 
             int targetPositionListIndex = 0;
 
-            foreach (UnitRTS unitRTS in selectedUnitRTSList) {
-                unitRTS.MoveTo(targetPositionList[targetPositionListIndex]);
+            foreach (Unit unit in selectedUnitList) {
+                unit.MoveTo(targetPositionList[targetPositionListIndex]);
                 targetPositionListIndex = (targetPositionListIndex + 1) % targetPositionList.Count;
             }
-        }
+        }*/
     }
 
     private List<Vector3> GetPositionListAround(Vector3 startPosition, float[] ringDistanceArray, int[] ringPositionCountArray) {

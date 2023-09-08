@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     private BoxCollider scrollDown;
 
     [Header("Selector")]
-    public SelectorScript selector;
+    public GameRTSController selector;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         scrollRight = colliderList[1];
         scrollUp = colliderList[2];
         scrollDown = colliderList[3];
-        selector = FindObjectOfType<SelectorScript>();
+        selector = FindObjectOfType<GameRTSController>();
     }
 
     // update the scroll colliders to the value of the scroll size. Only call this when the mouseScrollSize changes!
@@ -119,9 +119,8 @@ public class GameManager : MonoBehaviour
 
             int targetPositionListIndex = 0;
 
-            foreach (GameObject obj in selector.selected)
+            foreach (Unit unit in selector.selectedUnitList)
             {
-                Unit unit = obj.GetComponent<Unit>();
                 if (unit != null)
                 {
                     // world position of the mouse

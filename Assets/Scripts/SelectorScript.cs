@@ -27,9 +27,14 @@ public class SelectorScript : MonoBehaviour
         // handle first frame mouse click
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            boxPos1 = new Vector2((Input.mousePosition.x / Screen.width) * 32f, (Input.mousePosition.y / Screen.height) * 18f);
-            boxPos1 -= new Vector2(16f, 9f);
-            boxPos1 += new Vector2(cam.transform.position.x, cam.transform.position.y);
+            // calculates the fraction of the screen the click was on, bottom left 0,0 top right 32,18
+            // clamping so that clicks off the screen don't mess up
+            float xMouse = Mathf.Clamp(Input.mousePosition.x, 0, Screen.width);
+            float yMouse = Mathf.Clamp(Input.mousePosition.y, 0, Screen.height);
+            // multiply by the fraction of the screen in units
+            boxPos1 = new Vector2((xMouse / Screen.width) * 32f, (yMouse / Screen.height) * 18f);
+/*            boxPos1 -= new Vector2(16f, 9f); // subtract half way
+*/            boxPos1 += new Vector2(cam.transform.position.x, cam.transform.position.y);
             // reseting the selected units (TODO - unless the shift key is pressed)
             foreach (GameObject obj in selected)
             {
@@ -44,8 +49,10 @@ public class SelectorScript : MonoBehaviour
         // updates the rectangular select box
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            // takes proportion of screen from pixels and multiplies it by unit length of screen in Unity units (32 x 18)
-            boxPos2 = new Vector2((Input.mousePosition.x / Screen.width) * 32f, (Input.mousePosition.y / Screen.height) * 18f);
+            float xMouse = Mathf.Clamp(Input.mousePosition.x, 0, Screen.width);
+            float yMouse = Mathf.Clamp(Input.mousePosition.y, 0, Screen.height);
+            // multiply by the fraction of the screen in units
+            boxPos2 = new Vector2((xMouse / Screen.width) * 32f, (yMouse / Screen.height) * 18f);
             boxPos2 -= new Vector2(16f, 9f);
             boxPos2 += new Vector2(cam.transform.position.x, cam.transform.position.y);
             // this is to fix things
@@ -73,7 +80,6 @@ public class SelectorScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.ToString());
         if (other.gameObject.layer == LayerMask.NameToLayer("Unit") && Input.GetKey(KeyCode.Mouse0)) {
             if (!selected.Contains(other.gameObject))
             {

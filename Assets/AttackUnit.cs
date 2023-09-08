@@ -43,11 +43,10 @@ public class AttackUnit : Unit
 
     }
 
+    // this is when the two units hit each other from their center colliders
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject hitObject = collision.gameObject;
-        Debug.Log("The collidiosn");
-        Debug.Log(LayerMask.NameToLayer("Unit"));
         Debug.Log(hitObject.layer);
         // if it is a unit not on my team
         if (hitObject.layer == LayerMask.NameToLayer("Unit") && hitObject.tag != gameObject.tag)
@@ -56,14 +55,17 @@ public class AttackUnit : Unit
         }
     }
 
+    // looking colliders
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // if the other one is a trigger, ignore it
         // we only want to check for a trigger range hitting the actual object, not the two ranges hitting each other
         GameObject hitObject = collision.gameObject;
-        Debug.Log("The Trigger");
-        Debug.Log(LayerMask.NameToLayer("Unit"));
-        Debug.Log(hitObject.layer);
+        // Debug.Log(LayerMask.NameToLayer("Unit"));
+        if (hitObject.tag == "Red")
+        {
+            Debug.Log("I HIT A RED ONE HAHA");
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
