@@ -112,7 +112,6 @@ public class GameManager : MonoBehaviour
 
                     // else, find closest point to move towards
                 }
-                Debug.Log(hit.collider.gameObject.name);
             }
 
             List<Vector3> targetPositionList = GetPositionListAround(worldPosition, new float[] { 1f, 2f, 3f }, new int[] { 5, 10, 20 });

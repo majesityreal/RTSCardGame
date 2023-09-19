@@ -12,7 +12,8 @@ public class AttackUnit : Unit
     // TODO - add a target single type rather than a GameObject
     [SerializeField]
     private GameObject target;
-    private ArrayList enemiesInRange; // game object list
+    [SerializeField]
+    private LayerMask layersToAttack;
 
     new private void Awake()
     {
@@ -22,17 +23,34 @@ public class AttackUnit : Unit
     new private void Start()
     {
         base.Start();
-        enemiesInRange = new ArrayList();
     }
 
     // Update is called once per frame
     void Update()
     {
         // if no current target and there are enemies in range!
-        if (target != null && enemiesInRange.Count > 0)
+        if (target == null)
         {
             // Find the closest enemy and set them as target
-            target = (GameObject) enemiesInRange[0];
+            Collider2D[] hitInRange = Physics2D.OverlapCircleAll(gameObject.transform.position, targetRange);
+            // now we filter to find closest potential enemies
+            float closestCollider = targetRange;
+            foreach (Collider2D collider in hitInRange)
+            {
+                if (collider.tag == gameObject.tag || !((collider.gameObject.layer | layersToAttack) > 0)) // bitmask, we & the layer mask with the current layer and if it is greater than 0 it hits
+                {
+                    continue;
+                }
+                Debug.Log(collider.name);
+                Vector2 thisUnitPos = gameObject.transform.position;
+                Debug.Log(thisUnitPos);
+                float distance = Vector2.Distance(gameObject.transform.position, collider.transform.position);
+                if (distance < closestCollider)
+                {
+                    closestCollider = distance;
+                    target = collider.gameObject;
+                }
+            }
             Debug.Log(target);
         }
 
@@ -43,35 +61,17 @@ public class AttackUnit : Unit
 
     }
 
-    // this is when the two units hit each other from their center colliders
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        GameObject hitObject = collision.gameObject;
-        Debug.Log(hitObject.layer);
-        // if it is a unit not on my team
-        if (hitObject.layer == LayerMask.NameToLayer("Unit") && hitObject.tag != gameObject.tag)
-        {
-            enemiesInRange.Add(hitObject);
-        }
-    }
-
     // looking colliders
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // if the other one is a trigger, ignore it
         // we only want to check for a trigger range hitting the actual object, not the two ranges hitting each other
         GameObject hitObject = collision.gameObject;
-        // Debug.Log(LayerMask.NameToLayer("Unit"));
-        if (hitObject.tag == "Red")
+        // if it is not my team and it is a unit, you can set enemy
+        if (hitObject.tag != gameObject.tag && hitObject.layer == LayerMask.NameToLayer("Unit"))
         {
             Debug.Log("I HIT A RED ONE HAHA");
         }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        GameObject hitObject = collision.gameObject;
-        enemiesInRange.Remove(hitObject); // if it is not there will it crash?
     }
 
     private void OnDrawGizmos()

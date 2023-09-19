@@ -393,6 +393,9 @@ MonoBehaviour:
   attackRange: 1
   targetRange: 5
   target: {fileID: 0}
+  layersToAttack:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -8810,6 +8813,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soldier (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1335072322925970439, guid: 6004ac4d585682348893dd0e75024a58,
+        type: 3}
+      propertyPath: m_TagString
+      value: Blue
+      objectReference: {fileID: 0}
     - target: {fileID: 1335072323370353333, guid: 6004ac4d585682348893dd0e75024a58,
         type: 3}
       propertyPath: m_Name
@@ -8905,7 +8913,7 @@ MonoBehaviour:
   manualDebugFloorRoof: 0
   showSearchTree: 0
   unwalkableNodeDebugSize: 0.3
-  logPathResults: 1
+  logPathResults: 0
   maxNearestNodeDistance: 100
   scanOnStartup: 1
   fullGetNearestSearch: 0
@@ -8932,7 +8940,7 @@ MonoBehaviour:
     seed: 0
     pivotPointRoot: {fileID: 0}
     spreadOutCount: 1
-  showGraphs: 1
+  showGraphs: 0
 --- !u!4 &947970755
 Transform:
   m_ObjectHideFlags: 0
@@ -9237,6 +9245,9 @@ MonoBehaviour:
   attackRange: 1
   targetRange: 5
   target: {fileID: 0}
+  layersToAttack:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2013495481
 GameObject:
   m_ObjectHideFlags: 0
@@ -30308,8 +30319,8 @@ MonoBehaviour:
   cam: {fileID: 519420028}
   mouseScrolling: 1
   showMouseScrolling: 1
-  mouseScrollSize: 0.8
-  scrollSensitivity: 0.2
+  mouseScrollSize: 0.5
+  scrollSensitivity: 0
   scrollX: 0.91
   scrollY: 1.36
   selector: {fileID: 0}

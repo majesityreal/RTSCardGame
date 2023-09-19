@@ -204,7 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7474551431572696520}
   - component: {fileID: 8416608693025934670}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LookRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4863912085073579331}
   - component: {fileID: 2816233394261164525}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
